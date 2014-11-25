@@ -36,10 +36,10 @@ $(function() {
 		var rate = (ctpp/userCt) / atpp;
 
 		console.log('playback rate before manipulation', rate);
-
+		
 		if(rate > 4.0) {
 			rate = 4.0;
-		} else if(rate <= 0.5){
+		} else if(0 < rate <= 0.5){
 			rate = 0.5;
 		} else {
 			rate = rate;
