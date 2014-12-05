@@ -1,31 +1,26 @@
 $(function() {
 
-	var firebase = new Firebase('https://taptapflow.firebaseio.com/');
-
-	// YOU CAN CHANGE THESE:
-	var period = 10000, //length of time to watch for taps (milliseconds)
-		atpp = 15; //average taps per period
-
-	// YOU CAN'T CHANGE THESE:
-	var ctpp = 0; //current taps per period
-
-	var tapCounter = window.setInterval(function() {
-		console.log('running the tap counter interval');
-		firebase.child('gtpp').transaction(function(current_value) {
-			console.log('Changing the firebase gtpp value... it is currently set to', current_value);
-			console.log('setting it to... ', current_value + ctpp);
-			return current_value + ctpp;
-		}, function() {
-			console.log('Finished transaction. Resetting ctpp');
-			ctpp = 0;
-		});
-		firebase.child('userCt').transaction(function(current_value) {
-			return (current_value || 0) + 1;
-		});
-	}, period);
-
+	var firebase = new Firebase('https://taptapflow.firebaseio.com/'),
+	    listRef = new Firebase('https://taptapflow.firebaseio.com/presence'),
+	    userRef = listRef.push();
+	    presenceRef = firebase.child('.info').child('connected');
+	    
+	//Add current user to presenceRef
+	presenceRef.on('value', function(snapshot) {
+	  if (snapshot.val()) {
+	    userRef.set(true);
+	    //Remove when they disconnect
+	    userRef.onDisconnect().remove();
+	  }
+	});
+	
+	listRef.on("value", function(snap) {
+	  console.log("# of online users = " + snap.numChildren());
+	});    
+	
 	$(document).click(function() {
-		ctpp++;
-		console.log(ctpp, 'taps counted for this user\'s period')
+	  firebase.child('currentTaps').transaction(function(current_value) {
+			return current_value + 1;
+		});
 	});
 })

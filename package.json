@@ -9,6 +9,7 @@
     "consolidate": "^0.10.0",
     "cron": "^1.0.5",
     "express": "^4.10.4",
+    "firebase": "^2.0.6",
     "moment": "^2.8.4",
     "mustache": "^0.8.2",
     "time": "^0.11.0"

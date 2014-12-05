@@ -2,7 +2,9 @@ var express = require('express');
 var app = express();
 var port    = 	process.env.PORT || 8080;
 
-var CronJob = require('cron').CronJob,
+var Firebase = require('firebase'),
+    myFirebaseRef = new Firebase("https://taptapflow.firebaseio.com/"),
+    CronJob = require('cron').CronJob,
     moment = require('moment'),
     cons = require('consolidate');
     moment().format();
@@ -17,7 +19,7 @@ app.use(express.static('public'));
 //-----------------------------------
 
 app.get('/controller', function(req, res){
-  controller();
+  cron();
   cons.mustache('views/controller.html', {}, function(err, html) { //cons makes mustache play nice with express :-)
     if(err) throw err;
     res.send(html);
@@ -38,10 +40,13 @@ console.log('App running at http://localhost:' + port);
 //-----------------------------------
 //        Resource Functions
 //-----------------------------------
-function controller() {
+function cron() {
   new CronJob('*/10 * * * * 1-5', function(){
     console.log('Cron job interation', new Date());
-    //do controller stuff
+    
   }, null, true, "America/New_York");
   //You need a way of ending this cron job when the user exits
+}
+function controller() {
+  
 }
