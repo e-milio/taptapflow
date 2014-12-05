@@ -1,68 +1,68 @@
 $(function() {
-	var firebase = new Firebase("https://taptapflow.firebaseio.com/");
+	var firebase = new Firebase('https://taptapflow.firebaseio.com/'),
+	    listRef = new Firebase('https://taptapflow.firebaseio.com/presence');
 
 	// YOU CAN CHANGE THESE:
-	var period = 10000, //length of time to watch for taps (milliseconds)
-		atpp = 15; //average taps per period
+	var period = 5000, //length of time to watch for taps (milliseconds)
+  		atpp = 15; //average taps per period
 
 	// YOU CAN'T CHANGE THESE:
 	var ctpp = 0, //current taps per period
-		userCt = 0, //current user count
-		video = document.getElementById("video");
+  		userCt = 0, //current user count
+  		r = 0,
+  		g = 0,
+  		b = 0,
+  		video = document.getElementById("video");
 
+  function init() {
+    changeSpeed(ctpp, userCt);
+    changeBackground(r, g, b, userCt, ctpp);
+  }
+	function changeSpeed(ctpp, userCt) {
+		var rate = (ctpp/userCt) / atpp;
+		rate = round(rate);
+		video.playbackRate = rate;
+		video.play();
+	}
+	function changeBackground(r, g, b, userCt, ctpp) {
+	  rAvg = r == 0 ? 0 : Math.round(r / userCt / ctpp),
+	  gAvg = g == 0 ? 0 : Math.round(g / userCt / ctpp),
+	  bAvg = b == 0 ? 0 : Math.round(b / userCt / ctpp),
+	  rgb = 'rgb('+rAvg+', '+gAvg+', '+bAvg+')';
+	  $('body').css('background-color', rgb);
+	}
+	function reset() {
+	  firebase.child('currentTaps').set(0);
+	  firebase.child('r').set(0);
+	  firebase.child('g').set(0);
+	  firebase.child('b').set(0);
+	  ctpp = 0,
+	  r = 0,
+	  g = 0,
+	  b = 0;
+	}
+	function round(input) {
+	  return (Math.round(input*100))/100;
+	}
+	
+	//Events and listeners
 	firebase.on('value', function(snapshot) {
-		console.log(snapshot.val());
 		var data = snapshot.val();
-		ctpp = data['gtpp'];
-		userCt = data['userCt'];
+		ctpp = data['currentTaps'];
+		r = data['r'];
+		g = data['g'];
+		b = data['b'];
+	});
+	listRef.on("value", function(snap) {
+	  userCt = snap.numChildren();
 	});
 
 	var tapCounter = window.setInterval(function() {
-		changeSpeed(ctpp, userCt);
-		ctpp = 0;
-		window.setTimeout(function() {
-			console.log('here is where we should be resetting firebases values');
-			firebase.set({
-				'gtpp': 0,
-				'userCt': 0
-			});
-		}, 5000);
+		init();
+		reset();
 	}, period);
-
-
-	function changeSpeed(ctpp, userCt) {
-		console.log('Counted', ctpp, 'taps in this period');
-		console.log('There are ', userCt, 'users online');
-		var rate = (ctpp/userCt) / atpp;
-
-		console.log('playback rate before manipulation', rate);
-		
-		if(rate > 4.0) {
-			rate = 4.0;
-		} else if(rate <= 0.5){
-			rate = 0.5;
-		} else {
-			rate = rate;
-		}
-
-		// if(0.5 <= rate <= 4.0) {
-		// 	console.log('right where it needs to be');
-		// 	console.log('greater than .5?', 0.5<=rate);
-		// 	console.log('less than 4.0?', rate<=4.0);
-		// 	rate = rate;
-		// } else if(rate > 4.0) {
-		// 	console.log('over 4.0... scaling down');
-		// 	rate = 4.0;
-		// } else {
-		// 	console.log('too small');
-		// 	rate = 0.5;
-		// }
-
-		console.log('playback rate after manipulation', rate);
-
-		video.playbackRate = rate;
-  		video.play();
-	}
+	
+	reset();
 
 
 })

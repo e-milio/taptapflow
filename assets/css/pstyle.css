@@ -10,4 +10,5 @@ video {
 
 body {
 	background-color: blue;
+	transition: background-color 5s linear;
 }
