@@ -1,12 +1,33 @@
 <!DOCTYPE html>
 <html>
 	<head>
+		<title>Welcome to TapTapFlow</title>
 		<script type="text/javascript" src="assets/js/firebase.js"></script>
 		<script type="text/javascript" src="assets/js/jquery-2.1.1.min.js"></script>
-		<script type="text/javascript" src="assets/js/videoController.js"></script>
-		<link rel="stylesheet" type="text/css" href="assets/css/cstyle.css" />
+		<link rel="stylesheet" type="text/css" href="assets/css/style.css" />
 	</head>
 	<body>
-		<div id="this"></div>
+		<div id="container">
+			<div id="tapTapFlowLogo">
+	   			<a href="http://www.taptapflow.com/">
+	   				<img src="assets/video/ttf.gif" alt="TapTapFlow Icon" style="width:90px">
+		   		</a>
+	      	</div>
+	      		<video id="video" preload="auto" autoplay controls>
+					  <source src="http://tylerpaige.com/etc/ttf-intro.mp4" type='video/mp4;codecs="avc1.42E01E, mp4a.40.2"'/>
+				</video>
+			<div id="buttonContainer">
+				<div id="button">
+					<a href="http://taptapflow.com/controller">
+			          Click here for the Controller
+			        </a>
+			    </div>
+				<div id="button">
+					<a href="http://taptapflow.com/player">
+			          Click here for the Player
+			        </a>
+				</div>
+			</div>
+		</div>
 	</body>
 </html>
