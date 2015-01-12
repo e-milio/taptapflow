@@ -1,0 +1,48 @@
+
+body {
+	background-color: black;
+}
+
+#container {
+	width: 100%;
+	max-width: 800px;
+	margin: auto;
+}
+
+a {
+	color: white;
+	text-decoration: none;
+	font-family: Arial;
+	font-size: 20px;
+}
+
+#tapTapFlowLogo {
+	left: 15px;
+	top: 10px;
+	margin: auto;
+	width: 90px;
+}
+
+#buttonContainer {
+	width: 100%;
+	max-width: 484px;
+	margin: auto;
+}
+
+#button {
+	width: 200px;
+	height: 200px;
+	padding: 70px 0 0 0;
+	box-sizing: border-box;
+	margin: 20px;
+	text-align: center;
+	border-radius: 25%;
+	background: rgba(255, 255, 255, .5);
+	position: relative;
+	z-index: 1;
+	display: inline-block;
+}
+
+#video {
+	width: 100%;
+}

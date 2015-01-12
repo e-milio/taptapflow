@@ -4,7 +4,7 @@ $(function() {
 
 	// YOU CAN CHANGE THESE:
 	var period = 5000, //length of time to watch for taps (milliseconds)
-  		atpp = 15; //average taps per period
+  		atpp = 5; //average taps per period
 
 	// YOU CAN'T CHANGE THESE:
 	var ctpp = 0, //current taps per period
